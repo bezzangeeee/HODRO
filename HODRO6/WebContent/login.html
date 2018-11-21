@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HoverDron login</title>
+
+<style type="text/css">
+@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+	body{
+		margin:0;
+		padding:0;
+		background-color:white;
+		font-family: 'Jeju Gothic', serif;
+		
+	}
+	a{
+		text-decoration: none;
+	}
+	ul{
+		list-style-type: none;
+	}
+	#modal_all{
+		width:100%;
+		height:100%;
+		background-color: rgba(0,0,0,0.4);
+		z-index: 3;
+		position: fixed;
+		top:0;
+		left:0;
+		overflow: auto;	
+		padding-top: 25px;		
+		display:none;	
+	}
+	#body_layout{
+		box-shadow: 0 0 6px rgba(0,0,0,0.3);
+		display: inline-block;
+		width:600px;
+		margin: 20px 440px;
+		background: white;
+		border-radius:10px; 
+	}
+	#close_btn{
+		position: absolute;
+		right:-34px;
+		top:-37px;
+		color: #747474;
+		font-size: 25px;
+		padding:5px;
+		display: block;	
+		font-weight: 300px;
+			
+	}
+	#close_btn:hover{
+		color: black;
+		cursor: pointer;
+	}
+	/*header(호버드론로고)*/
+	#content_layout{
+		width:460px;
+		margin:0 auto;
+		/* border: 1px solid blue; */
+		position: relative;
+	}
+	#header_div img{
+		display:block;
+		margin:62px auto;
+	}
+	#header_login{
+	 	font-family: 'Noto Sans KR', sans-serif;
+		font-size: 33px;
+    	margin:30px auto;
+    	color: #707374;
+    	font-weight: 300;
+    	text-align: center;
+	}
+	
+	/*section(input(id,pw),로그인버튼,find)  */
+	
+	#insert_id{
+		background-color: white;
+		border: 1px solid #dadada;
+		width : 460px;
+		height: 51px;
+		box-sizing: border-box;
+		margin-top: 20px;
+		position: relative;
+	}
+	#insert_label{
+		font-family: 'Noto Sans KR', sans-serif;
+		font-size: 15px;
+		position: absolute;
+		z-index: 1;
+		transition: all .4s cubic-bezier(.25,.8,.25,1);
+		transition-duration: 0.3s;
+		color :#979797;
+		top: 13px;
+		left: 10px;
+	}
+	#input_id{
+		width: 100%;
+		height: 48px;
+		display: block;
+		position: relative;
+		border: none;
+		overflow: visible;
+		padding: 20px 0px 0px 10px;
+		box-sizing: border-box;
+		transition: all .4s cubic-bezier(.25,.8,.25,1);
+		outline : none;
+		
+	}
+	#insert_pw{
+		background-color: white;
+		border: 1px solid #dadada;
+		width : 460px;
+		height: 51px;
+		box-sizing: border-box;
+		margin-top: 20px;
+		position: relative;
+	}
+	#insert_label_pw{
+		font-family: 'Noto Sans KR', sans-serif;
+		font-size: 15px;
+		position: absolute;
+		z-index: 1;
+		transition: all .4s cubic-bezier(.25,.8,.25,1);
+		transition-duration: 0.3s;
+		color :#979797;
+		top: 13px;
+		left: 10px;
+	}
+	#input_pw{
+		width: 100%;
+		height: 48px;
+		display: block;
+		position: relative;
+		border: none;
+		overflow: visible;
+		padding: 20px 0px 0px 10px;
+		box-sizing: border-box;
+		transition: all .4s cubic-bezier(.25,.8,.25,1);
+		outline : none;
+		
+	}
+	.input_login{
+		width:408px;
+		height:16px;
+		border-width:0px;
+		padding: 7px 0px 6px 0px;
+		cursor: pointer;
+	}
+	
+	#btn_login{
+		display:block;
+		width:100%;
+		height:59px;
+		font-size: 22px;
+		text-align : center;
+		color: #fff;
+    	background: #44a8f2;
+    	border: 1px solid #44a8f2;
+    	border-radius:2px;
+    	padding-top:2px;
+		line-height:61px;
+		margin:30px auto;
+		cursor: pointer;
+		font-family: Open Sans,Helvetica Neue,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,Arial,sans-serif!important;
+	}
+	#btn_login:hover{
+		box-shadow: 0 0 4px rgba(0,0,0,0.2);
+	}
+	
+	/*다른 계정으로 로그인*/	
+	table{
+		border-collapse: collapse; /*표 한줄로 만들수 있도록 합쳐주는 코드*/
+		width: 100%;
+	}
+	.table_line{
+		border-bottom: 2px solid #EAEAEA;
+	}
+	td{
+		width:9px;
+		height:30px;
+		text-align:center;
+	}
+	#other_login{
+		font-family: Open Sans,Helvetica Neue,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,Arial,sans-serif!important;
+		color:#8c8c8c;
+	}
+	.btn{
+		width:100%;
+		text-transform:uppercase;
+		text-align:center;
+		border-radius:2px;
+		font-size:16px;		
+		cursor: pointer;
+    	text-decoration: none;
+    	font-family: Open Sans,Helvetica Neue,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,Arial,sans-serif!important;
+	}
+	.btn:hover{
+		box-shadow: 0 0 4px rgba(0,0,0,0.2);
+	}
+	.lg.btn{
+		height:48px;
+	}
+	.face.btn{
+		color:#fff;
+		background:#3b5998;
+		border:none;
+		
+	}.face.btn img{
+		width:125px;
+		height:20px;
+	}
+	
+	.ggl.btn{
+		margin-top:10px;
+		color:#ccc;
+		background:#fff;
+		border:1px solid #c1a2a2;
+	}	
+	.ggl.btn img{
+		width:122px;
+		height:18px;
+	}
+	
+	img{
+		vertical-align: middle;
+    	border-style: none;
+	}
+	/*계정만들기*/
+	fieldset{
+		color:#8c8c8c;
+		text-align : center;
+		border:none;
+		border-top:2px solid #EAEAEA;
+		margin:30px 0 10px 0px;
+		font-family: Open Sans,Helvetica Neue,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,Arial,sans-serif!important;
+	}
+
+	#btn_creatid{
+		box-sizing: border-box;
+		display:block;
+		width:100%;
+		height:59px;
+		font-size: 17px;
+		text-align : center;
+		color: #44a8f2;
+   		background: #fff;
+    	border: 1px solid #44a8f2;
+    	border-radius:2px;
+    	padding-top:2px;
+		line-height:61px;
+		margin:10px 0 20px 0;
+		cursor: pointer;
+		font-family: Open Sans,Helvetica Neue,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,Arial,sans-serif!important;
+	}
+	#btn_creatid:hover{
+		box-shadow: 0 0 4px rgba(0,0,0,0.2);
+	}
+	#err_check_msg{
+		display:inline-block;
+		width:428px;
+		height:24px;
+		font-size:11px;
+		font-weight:700;
+		line-height:24px;
+		color:#f46665;
+		padding:0px 15px;
+		text-align:center;
+	}
+	#err_check{
+		/* display:none; */
+	}
+</style>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#insert_id").focus(function(){
+			$(this).css("font-size", "17px");
+			$("#insert_label").css("top","5px").css("font-size","12px");
+		});
+		$("#input_id").focus(function(){
+			$(this).css("font-size", "17px");
+			$("#insert_label").css("top","5px").css("font-size","12px");
+		});
+		$("#input_id").blur(function(){
+			var idVal = $(this).val();
+			if(idVal == ""){
+				$(this).css("font-size","5px");
+				$("#insert_label").css("top","15px").css("font-size","15px");
+			}
+		});
+		
+		$("#insert_pw").focus(function(){
+			$(this).css("font-size", "17px");
+			$("#insert_label_pw").css("top","5px").css("font-size","12px");
+		});
+		$("#input_pw").focus(function(){
+			$(this).css("font-size", "17px");
+			$("#insert_label_pw").css("top","5px").css("font-size","12px");
+		});
+		$("#input_pw").blur(function(){
+			var idVal2 = $(this).val();
+			if(idVal2 == ""){
+				$(this).css("font-size","5px");
+				$("#insert_label_pw").css("top","15px").css("font-size","15px");
+				
+			}
+		});
+		
+		$("#btn_login").click(function(){
+			/* alert("test"); */
+			var id = $("#inputid").val();
+			var pw = $("#inputpw").val();
+			alert(id+","+pw);
+			
+			if(id !="" && pw !=""){
+				alert("페이지 이동");						
+			}else{/*둘다 값x 또는 둘 중에 하나라도 값이x*/
+				$("#err_check").css("display","block");
+				return; /*java로 이동하지 않고 화면단으로 다시 돌아감*/
+			}
+		});
+		
+		/* madal 창 켜고 끄기 */
+		$("#login_btn").click(function(){
+			$("#modal_all").css("display","block");
+		});
+		$("#close_btn").click(function(){
+			$("#input_id").val("");
+			$("#input_pw").val("");
+			$("#modal_all").css("display","none");
+		});
+	});
+	
+</script>
+</head>
+<body>
+<button id="login_btn">로그인</button>
+<div id="modal_all">
+	<div id="body_layout">
+		<div id="content_layout">
+			<span id="close_btn">X</span>
+			<header>
+				<div id="header_div">
+					<a href="#">
+						<img alt = "호버드론로고" src="img/7.png">
+					</a>
+				</div>
+				<div id="header_login">로그인</div>
+			</header>
+			
+			<section>
+				<div id="insert_id">
+					<label for ="insert_id" id="insert_label" id="hdid">
+						ID/이메일 주소를 입력해주세요.
+					</label>
+					<input type ="text" id="input_id" id="inputid">
+				</div>
+				
+				<div id="insert_pw">
+					<label for ="insert_pw" id="insert_label_pw" id="hdpw">
+						비밀번호
+					</label>
+					<input type ="text" id="input_pw" id="inputpw">
+				</div>			
+				
+				<div id="err_check">
+					<span id="err_check_msg">ID와 PW를 모두 입력해 주세요.</span>
+				</div>
+				<div><a href="#" id="btn_login">로그인</a></div>
+				
+				<table>
+					<tr>
+						<td class="table_line"></td>
+						<td id="other_login" rowspan="2">다른계정으로 로그인하기</td>
+						<td class="table_line"></td></tr>
+					<tr><td></td><td></td></tr>
+				</table>
+				
+				<button type="button" autofocus="autofocus" class ="btn face lg">
+					<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAAoCAMAAAD6+PelAAAApVBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+4/eNVAAAANnRSTlMA2bLtMgP7bYFEbGH1GVdQJeaaCvHVHxPFcjUCK/iellw63q7OuAaLhuKpoz8OkUsvfHdnvFkqzGXQAAAE8klEQVRo3u2Y2XaqMBSGQy05IqAoowMqivM89H//Rzs0IRig9rg82hv73XQ16drkC5udnZIM8zSOK2CQl8GehUh4Me1NALygdh+vqN3DS2rPX1P77TW1XXCMt/4n5EUwwAj35IewrWht/lcEf69Fll0en1qRtr8ttArOitzPQMlRFeNW8kuv8Dh9ErLcij+6oqYqBfIh3clgqEoRzLmbZudHPnRj7LAJZeaRS+ih9OyWomy7ee3q48pDS4zPAGyJTCdGhqvxsXcUKIdUdkRwdJARv5MMK0BGWFWz0H8u1ktgPCWP1DZqEmuRc00AlSm5sDYAdzvsmZ1hAFBNrG1Zk0lDDjm1eQyEqaDaBzA+7MzecOYCjpbtZwUYbfV3U2uvKNMrak/HwIptR/sTcCZtxvA+7cpXww3gCEipaBlAX2yD5sDpibV9H7IOKNlpWxFv3h4ARprPvpOobtKJaAEMitr2JBnkGY4ybw/UnmBEXJxJxhL0RDIiA8Ft2iQRZH5eiNiTtoNiSRgtoC2VvAC0sKP2GZil0ygzf5y2R3EgbcASA++FwjkDNW/TbgANvm94L/TVEStdFGN53KKYCO3s3nEg17X1x2lXQT1iUswvb59aucUBtdu0Na4dAcv8zoYI0sj5E6MFaFJoP5CzAWU6D9NWF5iwuaaapl7plLSs2962yJkZ/5HPfp8QuxTZpBhcQvsxqE6+0948THsH1EV+MjpXcunf2mYTZz7YJHmGQMQinAoTCs5ZaNMFrZPvtJvkYdpjfnZNK5jwgQ9gfY/2ZqggtngfHRCBvJX1cuQJFiK0qSDckW+1z3dqo3nBTdMs7VS2oLz4HgDvirZRkejwkHTEcYDwqLLPhqJfbFOBeRq5lP021/ZGAG3Ic92EKTjV7icP6NLS13QEeJe/T2KLsqte0c4RlUI6K40VsDSSjIEliyytXDy+x0JvF6g4CLNseGyXpl/g/ckIcTobY9FNW1X/ina/LuHzkE6DU28PHGCWhLB5nZLZJF6siTELEzNgk+5os6dRVHpP0C5/2xpQI5w/APu0TsD7fSVts+I1a4QJybNnEzoQlSpLk4fGyGJ/sPB+QnsJLFucMTAWh+992mQaozLlbV+eOqCx87zYVLsIeGjFTOuK6z9f2w8hQ80vP82+O75BO112j1XH3NpFevvAtpD8IVq50AMgsJ+u3U5ftnjdR96/VOxCT3G8SVuc/o2inu9A4eXDMAsdIj5yodU34E19traLhXp5RJMvTuf68tq8m7RFYSYBQq9QuBrp9zPIbaiBuHgDC4D+k7Wj/J1mztsJ1c0VVI1icuO33Q1gqLw7eZMSphPiLP6calIpWALrYmhfAebP1e7nm2cLWKWpamTX77WDhXmbdncgbsQrwM12rk1B99mVi1a74nExMC5XS6sJ1J6pvTHkLpInp5+mNVb6fkpMbQI4PbG2gSZj8XO7w1nXqwtg5GcXSGPe8IjdOZ0BqktXb5xrkU28RtUBAr+sTToGaP2J2qfipUMXj/9jICF0kOBGV/6XNmMhc7gieew+79soEpo76ZNZIIGyyFjaX56NO4pw/TztGIZdfP1uWmwGTTBGwy65SZsugpUm3z7GBhjKIfcQ++CKf/hH11oCHXD2Be2fYt846ZFP7mca1Wv6zipPeDu9Vl/bN4SQtF+KX+1X4lf7lfjVfhH+Ah/KNi32lyrWAAAAAElFTkSuQmCC">
+				</button>
+				<button type="button" autofocus="autofocus" class ="btn ggl lg">
+					<img src="data:image/png;base64,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">
+				</button>	
+				
+				<fieldset>
+	  				<legend>&nbsp;계정이 없으신가요?&nbsp;</legend>
+				</fieldset>
+				<div><a href="#" id="btn_creatid">HoverDron 계정 만들기</a></div>
+			</section>
+		</div>
+	</div>
+</div>			
+</body>
+</html>

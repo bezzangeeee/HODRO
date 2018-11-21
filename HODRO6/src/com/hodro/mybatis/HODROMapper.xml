@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com/hodro/mybatis/HODROMapper.xml">
+
+  <select id="bestView" resultType ="com.hodro.dto.ProductDTO">
+	<![CDATA[	
+	  	SELECT * FROM (SELECT * FROM hdproduct
+	              ORDER BY p_purchasecnt DESC)
+		WHERE ROWNUM <= 5
+	]]>	
+  </select>
+  
+  <!-- <select id="newView" resultType ="com.hodro.dto.ProductDTO">
+	<![CDATA[	
+	  	SELECT *FROM (SELECT *FROM hdproduct
+              ORDER BY p_indate DESC)
+		WHERE ROWNUM <= 10;
+	]]>	
+  </select> -->
+<!-- ============================================= -->
+
+	<!--MemberDAO  -->	
+	<insert id="insertMember" parameterType="com.hodro.dto.MemberDTO"><!--parameterType: 타입경로 지정해 주는 거 -->
+	INSERT INTO member(id,pw,name,phone,email,zipcode,addr1,addr2)
+    VALUES(#{id},#{pw},#{name},#{phone},#{email},#{zipcode},#{addr1},#{addr2})<!--바인딩 변수는 매칭하는 기능을 상실해 사용할 수 없으므로, DTO변수 명으로 부여  -->
+	</insert>
+	
+	<!-- id중복체크  -->
+	<select id="confirmID" parameterType="String" resultType="String">
+		SELECT id FROM member
+		WHERE id =#{userid}
+	</select>	
+	
+	<!--패스워드 수정시 기존 패스워드와 중복 확인 -->
+	<select id="confirmPW" parameterType="com.hodro.dto.MemberDTO" resultType="String">
+		SELECT id FROM member
+		WHERE id =#{id} AND pw=#{pw}		
+	</select>
+	
+	<!--로그인 확인체크  -->
+	<select id="loginCheck" parameterType="com.hodro.dto.MemberDTO" resultType="com.hodro.dto.MemberDTO">
+		SELECT *FROM member
+		WHERE id = #{id} AND pw =#{pw}		
+	</select>
+	
+	<!--회원정보수정  -->
+	<update id="memberUpdate" parameterType="com.hodro.dto.MemberDTO">
+		UPDATE member SET 
+		name=#{name}, 
+		phone=#{phone}, 
+		email=#{email}, 
+		zipcode=#{zipcode}, 
+		addr1=#{addr1},
+		addr2=#{addr2}
+		WHERE id=#{id}
+	</update>
+	<!--비밀번호 수정  -->
+	<update id="updatePw" parameterType="com.hodro.dto.MemberDTO">
+		UPDATE member SET 
+		pw=#{pw}
+		WHERE id=#{id}
+	</update>
+	<!-- 회원탈퇴 -->
+	<delete id="deleteMember" parameterType="String">
+		DELETE FROM member
+		WHERE id = #{userid}
+	</delete>
+	<!--===========================================================================  -->
+	
+	<!-- BoardDAO -->
+	
+	
+	<select id="countPaging" resultType="int">
+		<![CDATA[	
+		  	SELECT count(bno)
+		  	FROM hodroboard
+			WHERE bno>0
+		]]>	
+		<if test='flag == "1"'>
+       		<![CDATA[AND title LIKE '%'||#{keyword}||'%']]>
+        </if>
+        <if test='flag == "2"'>
+        	<![CDATA[AND content LIKE '%'||#{keyword}||'%']]>
+        </if>
+        <if test='flag == "3"'>
+        	<![CDATA[AND title LIKE '%'||#{keyword}||'%' OR content LIKE '%'||#{keyword}||'%']]>
+        </if>
+        <if test='flag == "4"'>
+        	<![CDATA[AND writer LIKE '%'||#{keyword}||'%']]>
+        </if>
+	</select>
+	
+	<select id="boardList" resultType="com.hodro.dto.BoardDTO">
+		<![CDATA[
+			SELECT * FROM (SELECT rownum rnum, 
+	                a.*
+	                FROM (SELECT *
+	                      FROM hodroboard
+	                      WHERE bno > 0 ]]>	
+
+	                      <if test='flag == "1"'>
+	                      <![CDATA[AND title LIKE '%'||#{keyword}||'%']]>
+	                      </if>
+	                      <if test='flag == "2"'>
+	                      <![CDATA[AND content LIKE '%'||#{keyword}||'%']]>
+	                      </if>
+	                      <if test='flag == "3"'>
+	                      <![CDATA[AND title LIKE '%'||#{keyword}||'%' OR content LIKE '%'||#{keyword}||'%']]>
+	                      </if>
+	                      <if test='flag == "4"'>
+	                      <![CDATA[AND writer LIKE '%'||#{keyword}||'%']]>
+	                      </if>
+	                      
+	                      <if test='code == "new"'>
+	                      		ORDER BY bno DESC	                      
+	                      </if>
+	                      <if test='code == "good"'>
+	                      		ORDER BY goodcnt DESC, bno DESC
+	                      </if>
+	                      <if test='code == "reply"'>
+	                      		ORDER BY replycnt DESC, bno DESC
+	                      </if>
+	                      <if test='code == "cnt"'>
+	                      		ORDER BY viewcnt DESC, bno DESC
+	                      </if>
+	           <![CDATA[  
+	                      )a
+	                )
+			WHERE rnum BETWEEN #{pageStart} AND #{perPageNum}
+		]]>	
+	</select>
+	
+	<select id="boardDetailView" resultType="com.hodro.dto.BoardDTO">
+		SELECT *
+		FROM hodroboard
+		WHERE bno =#{bno}
+	</select>
+	
+	<update id="viewCnt">
+		UPDATE hodroboard
+			SET viewcnt = viewcnt +1
+			WHERE bno = #{bno}
+	</update>
+	<insert id="boardInsert" parameterType="com.hodro.dto.BoardDTO">
+		
+		<choose>
+			<when test="content !=null">
+				INSERT INTO hodroboard(bno, title, content, writer,filename, filesize)
+				VALUES(seq_hodroboard.NEXTVAL, #{title},#{content},#{writer},#{filename},#{filesize})
+			</when>
+			<otherwise>
+				INSERT INTO hodroboard(bno,title, writer,filename, filesize)
+				VALUES(seq_hodroboard.NEXTVAL, #{title},#{writer},#{filename},#{filesize})
+			</otherwise>
+		</choose>
+	</insert>
+	
+	<!--게시글 수정  -->
+	<update id="boardUpdate" parameterType="com.hodro.dto.BoardDTO">
+		<choose>
+			<when test="content !=null">
+				UPDATE hodroboard SET 
+				title= #{title}, writer=#{writer},
+				<if test="filename !='no'">
+					filename = #{filename},
+					filesize = #{filesize},
+				</if>
+				content=#{content}
+				WHERE bno = #{bno}
+			</when>
+			<otherwise>
+				UPDATE hodroboard SET 
+				title= #{title},writer=#{writer},
+				<if test="filename !='no'">
+					filename = #{filename},
+					filesize = #{filesize}
+				</if>
+				WHERE bno = #{bno}
+			</otherwise>
+		
+		</choose>			
+	</update>
+	<delete id="boarddelete" parameterType="com.hodro.dto.BoardDTO">
+		DELETE FROM hodroboard
+		WHERE bno = #{bno}
+	</delete>
+	
+	<!--======================================================================  -->
+	<!-- ReplyDAO -->
+	<select id="replyListAll" resultType="com.hodro.dto.ReplyDTO" parameterType="String">
+		SELECT * FROM hodroreply
+		WHERE bno =#{bno}
+		ORDER BY rno ASC
+	</select>
+	
+	<delete id="replyDelete" parameterType="String">
+		DELETE FROM hodroreply
+		WHERE rno =#{rno}
+	</delete>
+	<insert id="replyInsert" parameterType="com.hodro.dto.ReplyDTO">
+		INSERT INTO hodroreply(rno,writer,content,bno)
+		VALUES(seq_hodroreply_rno.NEXTVAL,#{writer},#{content},#{bno})				
+	</insert>
+	<update id="rpPlus">
+		UPDATE hodroboard SET replycnt = replycnt+1
+		WHERE bno=#{bno}
+	</update>
+	<update id="rpMinus">
+		UPDATE hodroboard SET replycnt = replycnt-1
+		WHERE bno=#{bno}
+	</update> 
+</mapper>
