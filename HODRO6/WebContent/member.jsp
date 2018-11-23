@@ -361,6 +361,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	/*input */
+	//id
 	$("#insert_id").focus(function(){
 		$(this).css("font-size", "17px");
 		$("#insert_label").css("top","5px").css("font-size","12px");
@@ -377,6 +378,7 @@ $(document).ready(function(){
 		}
 	});
 	
+	//pw
 	$("#insert_pw").focus(function(){
 		$(this).css("font-size", "17px");
 		$("#insert_label_pw").css("top","5px").css("font-size","12px");
@@ -393,6 +395,7 @@ $(document).ready(function(){
 		}
 	});
 	
+	// 비밀번호 확인
 	$("#insert_rpw").focus(function(){
 		$(this).css("font-size", "17px");
 		$("#insert_label_rpw").css("top","5px").css("font-size","12px");
@@ -409,6 +412,7 @@ $(document).ready(function(){
 		}
 	});
 	
+	//이름
 	$("#insert_name").focus(function(){
 		$(this).css("font-size", "17px");
 		$("#insert_label_name").css("top","5px").css("font-size","12px");
@@ -424,7 +428,7 @@ $(document).ready(function(){
 			$("#insert_label_name").css("top","15px").css("font-size","15px");
 		}
 	});
-	
+	//전화번호
 	$("#insert_pn").focus(function(){
 		$(this).css("font-size", "17px");
 		$("#insert_label_pn").css("top","5px").css("font-size","12px");
@@ -440,7 +444,7 @@ $(document).ready(function(){
 			$("#insert_label_pn").css("top","15px").css("font-size","15px");
 		}
 	});
-	
+	//이메일
 	$("#selmail").change(function(){
 		var selmail =$("#selmail").val();
 		/*#selmail의 value값을 selmail변수에 담아라 */
@@ -455,7 +459,7 @@ $(document).ready(function(){
 	});	 
 	
 	 
-	 
+	//blur 했을때 input태그에 값 없으면 경고메세지 출력  
 	$(".input_join").blur(function(){
 		//.input태그에 입력된 값을 가져옴  
 		var inputVal = $(this).val();
@@ -532,11 +536,11 @@ $(document).ready(function(){
 		}
 		
 	}); 
-		$(".addrbtn").click(function(){ //우편번호조회로 연결
+		$(".input_join_addr").click(function(){ //우편번호조회로 연결
 			$("#btn_addr").click();
 		});
 		
-	$("#btn_member").click(function(){
+	/*$("#btn_member").click(function(){
 		var id = $("#input_id").val();
 		var pw = $("#input_pw").val();
 		var rpw = $("#input_rpw").val();
@@ -548,16 +552,16 @@ $(document).ready(function(){
 		alert(id+","+pw+","+rpw+","+name+","+pn+","+addr+","+email+","+email_url);
 		
 		if(id !="" && pw !="" && rpw !="" && name !="" && pn !="" && addr !="" && email !=""  && email_url !=""){
-		}else{/*둘다 값x 또는 둘 중에 하나라도 값이x*/
+		}else{//둘다 값x 또는 둘 중에 하나라도 값이x
 			$("#err_check").css("display","block");
-			return; /*java로 이동하지 않고 화면단으로 다시 돌아감*/
+			return; //java로 이동하지 않고 화면단으로 다시 돌아감
 		}
-	});	 
+	});	*/
 	
 });
 
  $(document).on("click","#btn_member",function(){
-	/* //유효성체크하는 값을 받아온다. 
+	 //유효성체크하는 값을 받아온다. 
 	var 
 	form = $("#frm_mem"),
 	mid = $("#input_id"),
@@ -566,7 +570,7 @@ $(document).ready(function(){
 	mname = $("#input_name"),
 	mphone = $("#input_pn"),
 	zipcode = $("#sample6_postcode"),
-	maddr1 =$("#sample6_address"),
+	maddr1 = $("#sample6_address"),
 	maddr2 = $("#sample6_address2"),
 	memailid = $("#email"),
 	memailurl = $("#email_url");
@@ -584,7 +588,7 @@ $(document).ready(function(){
 		return false;
 	}else if(!regId.test(id)){
 		mid.focus();
-		mid.next("span").text("4~12자 이내 영문자와 숫자만 입력하세요").css("display","block");
+		mid.next("span").text("4~12자 이내 영문자와 숫자만 입력하세요").css("display","block").css("color","#F46665");;
 		return false;
 	}//+ID 중복 체크 
 	
@@ -631,23 +635,23 @@ $(document).ready(function(){
 	     substring으로 "-" 을 제거한후 데이터 베이스에 저장 
 	3) 애초에 input tag를 3개를 만든다.
 	      input1 - input2-input3
-	      input size = 3 size=4 size =4   
+	      input size = 3 size=4 size =4   */
 	
 	var phone = $.trim(mphone.val());
-	var regphone =/^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+	var regphone = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
 	
 	
 	if(phone ==""){
 		mphone.focus();
 		mphone.next().text("필수정보입니다").css("display","block");
 		return false;
-	}else if($.isNumeric(phone)==false){// 숫자값만 들어왔는지 체크 //
+	}else if($.isNumeric(phone) == false){// 숫자값만 들어왔는지 체크 //
 		mphone.select();
-		mphone.next.text("숫자만입력하세요").css("display","block");
+		mphone.next().text("숫자만입력하세요").css("display","block");
 		return false;
-	}else if(!regPhone.test(phone)){
+	}else if(!regphone.test(phone)){
 		mphone.select();
-		mphone.next.text("올바른 값을 입력하세요").css("display","block");
+		mphone.next().text("올바른 값을 입력하세요").css("display","block");
 		return false;
 	}
 	
@@ -674,8 +678,9 @@ $(document).ready(function(){
 	
 	var mailid =$.trim(memailid.val());
 	var mailurl =$.trim(memailurl.val());
-	var mail = $.trim(memailid.val())+"@"+$.trim(memailurl.val());
-	var regMail =/([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+	
+	var mail = mailid + "@" + mailurl;
+	var regMail = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 	
 	if(mailid ==""){
 		memailid.focus();
@@ -689,10 +694,11 @@ $(document).ready(function(){
 		memailid.select();
 		$("#selmail").next.text("Email형식이 올바르지 않습니다").css("display","block");
 		return false;
-	}  */
+	}  
 	
-	
-	$("#frm_mem").submit(); 
+
+	/* 유효성체크 값이 유효한값 확인 끝!!!*/
+	form.submit();
 });
 </script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
